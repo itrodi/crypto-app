@@ -99,7 +99,7 @@ export default function UserSidebar() {
     toggleDrawer();
   };
 
-  const removeFromWatchlist = async (coin) => {
+  const removeFromWatchlist = async ({coin}) => {
     const coinRef = doc(db, "watchlist", user.uid);
     try {
       await setDoc(
@@ -165,7 +165,25 @@ export default function UserSidebar() {
                   <span style={{ fontSize: 15, textShadow: "0 0 5px black" }}>
                     Watchlist
                   </span>
-                
+
+                  {coins.map((coin) => {
+                  if (watchlist.includes(coin.id))
+                  return (
+                    <div className={classes.coin}>
+                      <span>{coin.name}</span>
+                      <span style={{ display: "flex", gap: 8 }}>
+                        {symbol}{" "}
+                        {numberWithCommas(coin.current_price.toFixed(2))}
+                        <AiFillDelete
+                          style={{ cursor: "pointer" }}
+                          fontSize="16"
+                          onClick={() => removeFromWatchlist(coin)}
+                        />
+                      </span>
+                    </div>
+                  );
+                else return <></>;
+                  })}
                 </div>
               </div>
               <Button
